@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Web Dünyam - Anasayfa</title>
+    
+    <style>
+        /* --- RENK PALETİ (Neon & Pastel) --- */
+        :root {
+            --arka-plan: #f0f4f8;
+            --yazi-rengi: #1e293b;
+            --kutu-arka-plan: #ffffff;
+            --ana-renk: #6366f1;
+            --yardimci-renk: #3b82f6;
+            --menu-arka-plan: #0f172a;
+        }
+
+        [data-tema="dark"] {
+            --arka-plan: #0b0f19;
+            --yazi-rengi: #f1f5f9;
+            --kutu-arka-plan: #1e293b;
+            --ana-renk: #a855f7;
+            --yardimci-renk: #06b6d4;
+            --menu-arka-plan: #030712;
+        }
+
+        /* Sayfa Düzeni */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--arka-plan);
+            color: var(--yazi-rengi);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            transition: all 0.4s ease;
+            scroll-behavior: smooth; /* Sayfa içi kaymaları yumuşatır */
+        }
+        
+        /* Menü */
+        nav {
+            background-color: var(--menu-arka-plan);
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 15px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-linkler a {
+            color: #94a3b8;
+            padding: 14px 20px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .menu-linkler a:hover {
+            color: #ffffff;
+        }
+
+        .tema-btn {
+            background: linear-gradient(135deg, var(--ana-renk), var(--yardimci-renk));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .tema-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Kartlar */
+        .kart-konteyner {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .kart {
+            flex: 1;
+            min-width: 250px;
+            background-color: var(--kutu-arka-plan);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 4px solid var(--ana-renk);
+        }
+
+        .kart:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.2);
+        }
+
+        /* --- YENİ ÖZELLİK: SIKÇA SORULAN SORULAR (AKORDEON) --- */
+        .sss-alani {
+            margin-top: 40px;
+        }
+
+        details {
+            background-color: var(--kutu-arka-plan);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            transition: all 0.3s;
+        }
+
+        summary {
+            font-weight: bold;
+            cursor: pointer;
+            outline: none;
+            user-select: none;
+        }
+
+        details[open] {
+            border-left: 4px solid var(--yardimci-renk);
+        }
+
+        details p {
+            margin-top: 10px;
+            color: var(--yazi-rengi);
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        /* Beğeni Butonu */
+        .etkilesim-alani {
+            background-color: var(--kutu-arka-plan);
+            padding: 20px;
+            border-radius: 16px;
+            margin-top: 30px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .begen-btn {
+            background-color: transparent;
+            border: 2px solid var(--yardimci-renk);
+            color: var(--yardimci-renk);
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .begen-btn:hover {
+            background-color: var(--yardimci-renk);
+            color: white;
+        }
+
+        /* --- YENİ ÖZELLİK: YUKARI ÇIK BUTONU --- */
+        #yukari-cik-btn {
+            display: none; /* Sayfa yukardayken gizli */
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            background-color: var(--ana-renk);
+            color: white;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 50px;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        #yukari-cik-btn:hover {
+            transform: scale(1.1);
+            background-color: var(--yardimci-renk);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 14px;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+    <button onclick="tepeyeGit()" id="yukari-cik-btn" title="Yukarı Çık">▲</button>
+
+    <nav>
+       <div class="menu-linkler">
+           <a href="index.html" id="ln-anasayfa">Anasayfa</a>
+           <a href="hakkimda.html" id="ln-hakkimda">Hakkımda</a>
+           <a href="oyun.html" id="ln-oyun">Oyun</a>
+       </div>
+        <button class="tema-btn" onclick="temaDegistir()">✨ Görünümü Değiştir</button>
+    </nav>
+
+    <header style="margin-top: 40px;">
+        <h1>Geleceğin Web Projesi</h1>
+        <p>Göz alıcı yeni renk paletimiz, modern kart tasarımlarımız ve animasyonlarımızla tanışın.</p>
+    </header>
+
+    <div class="kart-konteyner">
+        <div class="kart">
+            <h3>🎨 Modern Tasarım</h3>
+            <p>Değişken renk kodları sayesinde tek tıkla siberpunk gece moduna geçiş yapabiliyoruz.</p>
+        </div>
+        <div class="kart">
+            <h3>⚡ Akıcı Geçişler</h3>
+            <p>CSS transition kullanarak elementlerin hareketlerini ve renk değişimlerini pürüzsüzleştirdik.</p>
+        </div>
+    </div>
+
+    <div class="sss-alani">
+        <h2>Sıkça Sorulan Sorular</h2>
+        
+        <details>
+            <summary>Bu site tamamen ücretsiz mi?</summary>
+            <p>Evet! Bu projede kullandığımız tüm kodlar açık kaynaklıdır ve tamamen ücretsiz olarak geliştirilmiştir.</p>
+        </details>
+
+        <details>
+            <summary>Karanlık mod seçimim neden kaybolmuyor?</summary>
+            <p>Çünkü JavaScript'in tarayıcı hafızası özelliği olan 'localStorage'ı kullanıyoruz. Seçiminiz tarayıcınız tarafından hatırlanıyor.</p>
+        </details>
+    </div>
+
+    <div class="etkilesim-alani">
+        <h3>Bu Tasarımı Beğendin mi?</h3>
+        <p>Aşağıdaki butona basarak JavaScript sayacını test edebilirsin:</p>
+        <button class="begen-btn" onclick="begen()">❤️ Beğen (<span id="sayac">0</span>)</button>
+    </div>
+
+    <footer>
+        <p>© 2026 Modern Web Dünyam. Tüm Hakları Saklıdır.</p>
+    </footer>
+
+    <script>
+        const htmlEtiketi = document.documentElement;
+        const kaydedilenTema = localStorage.getItem('web-temasi');
+
+        if (kaydedilenTema === 'dark') {
+            htmlEtiketi.setAttribute('data-tema', 'dark');
+        }
+
+        function temaDegistir() {
+            if (htmlEtiketi.getAttribute('data-tema') === 'dark') {
+                htmlEtiketi.removeAttribute('data-tema');
+                localStorage.setItem('web-temasi', 'light');
+            } else {
+                htmlEtiketi.setAttribute('data-tema', 'dark');
+                localStorage.setItem('web-temasi', 'dark');
+            }
+        }
+
+        let begeniSayisi = 0;
+        function begen() {
+            begeniSayisi++;
+            document.getElementById('sayac').innerText = begeniSayisi;
+        }
+
+        // --- YENİ ÖZELLİK: YUKARI ÇIK KONTROLLERİ ---
+        const yukariButonu = document.getElementById("yukari-cik-btn");
+
+        // Kullanıcı sayfayı 300 piksel aşağı kaydırırsa butonu göster
+        window.onscroll = function() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                yukariButonu.style.display = "block";
+            } else {
+                yukariButonu.style.display = "none";
+            }
+        };
+
+        // Butona basıldığında sayfayı en tepeye fırlatır
+        function tepeyeGit() {
+            document.body.scrollTop = 0; // Safari için
+            document.documentElement.scrollTop = 0; // Chrome, Firefox, IE için
+        }
+    </script>
+
+</body>
+</html>

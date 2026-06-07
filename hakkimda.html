@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hakkımda - Modern Web Dünyam</title>
+    
+    <style>
+        /* --- index.html İLE BİREBİR AYNI RENK PALETİ VE TEMELLER --- */
+        :root {
+            --arka-plan: #f0f4f8;
+            --yazi-rengi: #1e293b;
+            --kutu-arka-plan: #ffffff;
+            --ana-renk: #6366f1;
+            --yardimci-renk: #3b82f6;
+            --menu-arka-plan: #0f172a;
+        }
+
+        [data-tema="dark"] {
+            --arka-plan: #0b0f19;
+            --yazi-rengi: #f1f5f9;
+            --kutu-arka-plan: #1e293b;
+            --ana-renk: #a855f7;
+            --yardimci-renk: #06b6d4;
+            --menu-arka-plan: #030712;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--arka-plan);
+            color: var(--yazi-rengi);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            transition: all 0.4s ease;
+        }
+        
+        nav {
+            background-color: var(--menu-arka-plan);
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 15px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-linkler a {
+            color: #94a3b8;
+            padding: 14px 20px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .menu-linkler a:hover {
+            color: #ffffff;
+        }
+
+        .tema-btn {
+            background: linear-gradient(135deg, var(--ana-renk), var(--yardimci-renk));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .tema-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Profil Kartı */
+        .profil-kart {
+            background-color: var(--kutu-arka-plan);
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border-left: 6px solid var(--ana-renk);
+            transition: transform 0.3s;
+        }
+
+        .profil-kart:hover {
+            transform: translateY(-4px);
+        }
+
+        /* Yetenek Barları (Progress Bars) */
+        .yetenek-alani {
+            margin-top: 30px;
+            background-color: var(--kutu-arka-plan);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .yetenek-grup {
+            margin-bottom: 20px;
+        }
+
+        .yetenek-isim {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .bar-arkaplan {
+            background-color: #e2e8f0;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+        }
+
+        .bar-ilerleme {
+            background: linear-gradient(90deg, var(--ana-renk), var(--yardimci-renk));
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 14px;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="menu-linkler">
+            <a href="index.html">Anasayfa</a>
+            <a href="hakkimda.html">Hakkımda</a>
+            <a href="oyun.html" id="ln-oyun">Oyun</a>
+        </div>
+        <button class="tema-btn" onclick="temaDegistir()">✨ Görünümü Değiştir</button>
+    </nav>
+
+    <div class="profil-kart">
+        <h1>Ben Kimim?</h1>
+        <h2>Kod Dünyasında Yeni Bir Gezgin</h2>
+        <p>Sıfırdan başlayarak HTML'in iskelet yapısını, CSS'in görsel gücünü ve JavaScript'in dinamizmini keşfettim. Sürekli öğrenmeye ve projelerimi büyütmeye devam ediyorum.</p>
+    </div>
+
+    <div class="yetenek-alani">
+        <h3>Yazılım Yeteneklerim</h3>
+        
+        <div class="yetenek-grup">
+            <div class="yetenek-isim">
+                <span>HTML5 (İskelet ve Yapı)</span>
+                <span>%85</span>
+            </div>
+            <div class="bar-arkaplan">
+                <div class="bar-ilerleme" style="width: 85%;"></div>
+            </div>
+        </div>
+
+        <div class="yetenek-grup">
+            <div class="yetenek-isim">
+                <span>CSS3 (Tasarım ve Animasyon)</span>
+                <span>%70</span>
+            </div>
+            <div class="bar-arkaplan">
+                <div class="bar-ilerleme" style="width: 70%;"></div>
+            </div>
+        </div>
+
+        <div class="yetenek-grup">
+            <div class="yetenek-isim">
+                <span>JavaScript (Dinamik Kodlama)</span>
+                <span>%50</span>
+            </div>
+            <div class="bar-arkaplan">
+                <div class="bar-ilerleme" style="width: 50%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Modern Web Dünyam. Tüm Hakları Saklıdır.</p>
+    </footer>
+
+    <script>
+        const htmlEtiketi = document.documentElement;
+        const kaydedilenTema = localStorage.getItem('web-temasi');
+
+        if (kaydedilenTema === 'dark') {
+            htmlEtiketi.setAttribute('data-tema', 'dark');
+        }
+
+        function temaDegistir() {
+            if (htmlEtiketi.getAttribute('data-tema') === 'dark') {
+                htmlEtiketi.removeAttribute('data-tema');
+                localStorage.setItem('web-temasi', 'light');
+            } else {
+                htmlEtiketi.setAttribute('data-tema', 'dark');
+                localStorage.setItem('web-temasi', 'dark');
+            }
+        }
+    </script>
+
+</body>
+</html>

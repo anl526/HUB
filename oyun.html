@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kişisel Merkez - Modern Web Dünyam</title>
+    
+    <style>
+        :root {
+            --arka-plan: #f0f4f8;
+            --yazi-rengi: #1e293b;
+            --kutu-arka-plan: #ffffff;
+            --ana-renk: #6366f1;
+            --yardimci-renk: #3b82f6;
+            --menu-arka-plan: #0f172a;
+        }
+
+        [data-tema="dark"] {
+            --arka-plan: #0b0f19;
+            --yazi-rengi: #f1f5f9;
+            --kutu-arka-plan: #1e293b;
+            --ana-renk: #a855f7;
+            --yardimci-renk: #06b6d4;
+            --menu-arka-plan: #030712;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--arka-plan);
+            color: var(--yazi-rengi);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            transition: all 0.4s ease;
+        }
+        
+        nav {
+            background-color: var(--menu-arka-plan);
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-linkler a {
+            color: #94a3b8;
+            padding: 10px 15px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .menu-linkler a:hover { color: #ffffff; }
+        .nav-butonlar { display: flex; gap: 10px; align-items: center; }
+
+        .tema-btn, .dil-btn {
+            background: linear-gradient(135deg, var(--ana-renk), var(--yardimci-renk));
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .dil-btn { background: #334155; border: 1px solid #475569; }
+        .tema-btn:hover, .dil-btn:hover { transform: scale(1.05); }
+
+        .oyun-konteyner {
+            background-color: var(--kutu-arka-plan);
+            padding: 25px;
+            border-radius: 16px;
+            margin-top: 30px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .skor-tablosu {
+            display: flex;
+            justify-content: space-around;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .gamer-ayarlar {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .zorluk-select {
+            padding: 10px;
+            border-radius: 8px;
+            background-color: var(--arka-plan);
+            color: var(--yazi-rengi);
+            border: 2px solid var(--ana-renk);
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .tuval-alani {
+            position: relative;
+            display: inline-block;
+            margin: 10px auto;
+        }
+
+        @keyframes rgbIşik {
+            0% { border-color: #6366f1; box-shadow: 0 0 15px rgba(99, 102, 241, 0.4); }
+            50% { border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
+            100% { border-color: #6366f1; box-shadow: 0 0 15px rgba(99, 102, 241, 0.4); }
+        }
+
+        #oyunTuvali {
+            background-color: #0b0f19;
+            border: 5px solid var(--ana-renk);
+            border-radius: 8px;
+            display: block;
+            animation: rgbIşik 4s linear infinite;
+        }
+
+        #geriSayimEkran {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(11, 15, 25, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 72px;
+            font-weight: bold;
+            color: #6366f1;
+            border-radius: 8px;
+            pointer-events: none;
+            display: none;
+        }
+
+        .baslat-btn {
+            background: linear-gradient(135deg, var(--ana-renk), var(--yardimci-renk));
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            transition: all 0.2s;
+        }
+
+        .baslat-btn:hover { transform: scale(1.05); }
+        .baslat-btn:disabled { background: #64748b; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* EVRENSEL İHTİYAÇ KUTULARI */
+        .ihtiyac-konteyner {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .ihtiyac-kart {
+            flex: 1;
+            min-width: 250px;
+            background-color: var(--kutu-arka-plan);
+            padding: 22px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--yardimci-renk);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .ihtiyac-kart:hover { transform: translateY(-5px); }
+
+        .ihtiyac-btn {
+            background-color: var(--ana-renk);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 12px;
+            transition: opacity 0.2s;
+        }
+        .ihtiyac-btn:hover { opacity: 0.9; }
+
+        .sayac-rakam {
+            font-size: 26px;
+            font-weight: bold;
+            color: var(--yardimci-renk);
+            margin: 8px 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .kontrol-notu { margin-top: 15px; font-size: 14px; opacity: 0.7; }
+        footer { text-align: center; margin-top: 50px; padding: 20px; border-top: 1px solid #e2e8f0; font-size: 14px; color: #64748b; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="menu-linkler">
+            <a href="index.html" id="ln-anasayfa">Anasayfa</a>
+            <a href="hakkimda.html" id="ln-hakkimda">Hakkımda</a>
+            <a href="oyun.html" id="ln-oyun">Oyun</a>
+        </div>
+        <div class="nav-butonlar">
+            <button class="dil-btn" onclick="dilDegistir()" id="ln-dil-btn">🌐 EN</button>
+            <button class="tema-btn" onclick="temaDegistir()" id="ln-tema-btn">✨ Görünümü Değiştir</button>
+        </div>
+    </nav>
+
+    <div class="oyun-konteyner">
+        <h1 id="ln-oyun-baslik">🎮 Mola Alanı: Yılan Oyunu</h1>
+        
+        <div class="skor-tablosu">
+            <div><span id="ln-skor">Skor</span>: <span id="skorDeger">0</span></div>
+            <div><span id="ln-en-yuksek">En Yüksek Skor</span>: <span id="enYuksekDeger">0</span></div>
+        </div>
+
+        <div class="gamer-ayarlar">
+            <select id="zorlukSecici" class="zorluk-select">
+                <option value="noob" id="opt-noob">Zorluk: Kolay</option>
+                <option value="pro" id="opt-pro" selected>Zorluk: Normal</option>
+                <option value="hacker" id="opt-hacker">Zorluk: Zor</option>
+            </select>
+            <button id="btn-baslat" class="baslat-btn" onclick="geriSayimiBaslat()">OYUNU BAŞLAT</button>
+        </div>
+
+        <div class="tuval-alani">
+            <canvas id="oyunTuvali" width="400" height="400"></canvas>
+            <div id="geriSayimEkran">3</div>
+        </div>
+        
+        <p class="kontrol-notu" id="ln-kontrol-notu">Klavye yön tuşlarını kullanarak yılanı yönlendirebilirsiniz. Duvarlara veya kendinize çarpmamaya dikkat edin!</p>
+    </div>
+
+    <div class="ihtiyac-konteyner">
+        
+        <div class="ihtiyac-kart" style="border-top-color: #38bdf8;">
+            <h3>💧 <span id="ln-su-baslik">Sağlıklı Su Takibi</span></h3>
+            <p id="ln-su-metin">Masa başında hidrasyonu koruyun:</p>
+            <div class="sayac-rakam"><span id="suBardak">0</span> / 8</div>
+            <button class="ihtiyac-btn" onclick="suEkle()" id="ln-su-btn">+1 Bardak Su</button>
+            <button class="ihtiyac-btn" onclick="suSifirla()" style="background:#ef4444; margin-left:5px;">🔄</button>
+        </div>
+
+        <div class="ihtiyac-kart" style="border-top-color: #10b981;">
+            <h3>👁️ <span id="ln-goz-baslik">20-20-20 Göz Kuralı</span></h3>
+            <p id="ln-goz-metin">Göz yorgunluğunu önlemek için sayaç:</p>
+            <div id="gozZamanlayici" class="sayac-rakam" style="color: #10b981;">20:00</div>
+            <button class="ihtiyac-btn" onclick="gozSayaciniBaslat()" id="ln-goz-btn">Takibi Başlat</button>
+        </div>
+
+        <div class="ihtiyac-kart" style="border-top-color: #f43f5e;">
+            <h3>⏱️ <span id="ln-pomo-baslik">Pomodoro Sayacı</span></h3>
+            <p id="ln-pomo-metin">Verimli çalışma ve odaklanma süresi:</p>
+            <div id="pomoZamanlayici" class="sayac-rakam" style="color: #f43f5e;">25:00</div>
+            <button class="ihtiyac-btn" onclick="pomoSayaciniBaslat()" id="ln-pomo-btn">Çalışmayı Başlat</button>
+        </div>
+
+    </div>
+
+    <footer>
+        <p id="ln-footer">© 2026 Modern Web Dünyam. Tüm Hakları Saklıdır.</p>
+    </footer>
+
+    <script>
+        const diller = {
+            tr: {
+                anasayfa: "Anasayfa", hakkimda: "Hakkımda", oyun: "Mola Alanı", dilBtn: "🌐 EN", temaBtn: "✨ Görünümü Değiştir",
+                oyunBaslik: "🎮 Mola Alanı: Yılan Oyunu", skor: "Skor", enYuksek: "En Yüksek Skor",
+                baslatBtn: "OYUNU BAŞLAT", baslaUnlem: "BAŞLA!", oyunBitti: "Oyun Bitti! Skorunuz: ",
+                noob: "Zorluk: Kolay", pro: "Zorluk: Normal", hacker: "Zorluk: Zor",
+                suBaslik: "Sağlıklı Su Takibi", suMetin: "Masa başında hidrasyonu koruyun:", suBtn: "+1 Bardak Su",
+                gozBaslik: "20-20-20 Göz Kuralı", gozMetin: "Göz yorgunluğunu önlemek için sayaç:", gozBtn: "Takibi Başlat",
+                pomoBaslik: "Pomodoro Sayacı", pomoMetin: "Verimli çalışma ve odaklanma süresi:", pomoBtn: "Çalışmayı Başlat",
+                gozUyarisi: "20 Dakika Oldu! 20 saniye boyunca uzağa (en az 6 metre) bakarak gözlerini dinlendir.",
+                pomoUyarisi: "Tebrikler! 25 dakikalık odaklanma bitti. Şimdi 5 dakika mola ver ve ayağa kalk!",
+                kontrolNotu: "Klavye yön tuşlarını kullanarak yılanı yönlendirebilirsiniz. Duvarlara veya kendinize çarpmamaya dikkat edin!",
+                footer: "© 2026 Modern Web Dünyam. Tüm Hakları Saklıdır."
+            },
+            en: {
+                anasayfa: "Home", hakkimda: "About Me", oyun: "Break Zone", dilBtn: "🌐 TR", temaBtn: "✨ Change Theme",
+                oyunBaslik: "🎮 Break Zone: Snake Game", skor: "Score", enYuksek: "High Score",
+                baslatBtn: "START GAME", baslaUnlem: "GO!", oyunBitti: "Game Over! Your Score: ",
+                noob: "Difficulty: Easy", pro: "Difficulty: Normal", hacker: "Difficulty: Hard",
+                suBaslik: "Healthy Water Tracker", suMetin: "Stay hydrated at your desk:", suBtn: "+1 Glass of Water",
+                gozBaslik: "20-20-20 Eye Rule", gozMetin: "Timer to prevent eye strain:", gozBtn: "Start Tracking",
+                pomoBaslik: "Pomodoro Timer", pomoMetin: "Productive work and focus time:", pomoBtn: "Start Focus",
+                gozUyarisi: "20 Minutes Up! Look at something 20 feet away for 20 seconds to rest your eyes.",
+                pomoUyarisi: "Congrats! 25-minute focus session finished. Take a 5-minute break and stretch!",
+                kontrolNotu: "Use keyboard arrow keys to direct the snake. Don't hit the walls or yourself!",
+                footer: "© 2026 My Modern Web World. All Rights Reserved."
+            }
+        };
+
+        let mevcutDil = localStorage.getItem('web-dili') || 'tr';
+
+        function diliYansit() {
+            const dil = diller[mevcutDil];
+            document.getElementById('ln-anasayfa').innerText = dil.anasayfa;
+            document.getElementById('ln-hakkimda').innerText = dil.hakkimda;
+            document.getElementById('ln-oyun').innerText = dil.oyun;
+            document.getElementById('ln-dil-btn').innerText = dil.dilBtn;
+            document.getElementById('ln-tema-btn').innerText = dil.temaBtn;
+            document.getElementById('ln-oyun-baslik').innerText = dil.oyunBaslik;
+            document.getElementById('ln-skor').innerText = dil.skor;
+            document.getElementById('ln-en-yuksek').innerText = dil.enYuksek;
+            document.getElementById('btn-baslat').innerText = dil.baslatBtn;
+            document.getElementById('opt-noob').innerText = dil.noob;
+            document.getElementById('opt-pro').innerText = dil.pro;
+            document.getElementById('opt-hacker').innerText = dil.hacker;
+            document.getElementById('ln-su-baslik').innerText = dil.suBaslik;
+            document.getElementById('ln-su-metin').innerText = dil.suMetin;
+            document.getElementById('ln-su-btn').innerText = dil.suBtn;
+            document.getElementById('ln-goz-baslik').innerText = dil.gozBaslik;
+            document.getElementById('ln-goz-metin').innerText = dil.gozMetin;
+            document.getElementById('ln-goz-btn').innerText = dil.gozBtn;
+            document.getElementById('ln-pomo-baslik').innerText = dil.pomoBaslik;
+            document.getElementById('ln-pomo-metin').innerText = dil.pomoMetin;
+            document.getElementById('ln-pomo-btn').innerText = dil.pomoBtn;
+            document.getElementById('ln-kontrol-notu').innerText = dil.kontrolNotu;
+            document.getElementById('ln-footer').innerText = dil.footer;
+        }
+
+        function dilDegistir() {
+            mevcutDil = (mevcutDil === 'tr') ? 'en' : 'tr';
+            localStorage.setItem('web-dili', mevcutDil);
+            diliYansit();
+        }
+
+        const htmlEtiketi = document.documentElement;
+        const kaydedilenTema = localStorage.getItem('web-temasi');
+        if (kaydedilenTema === 'dark') htmlEtiketi.setAttribute('data-tema', 'dark');
+
+        function temaDegistir() {
+            if (htmlEtiketi.getAttribute('data-tema') === 'dark') {
+                htmlEtiketi.removeAttribute('data-tema');
+                localStorage.setItem('web-temasi', 'light');
+            } else {
+                htmlEtiketi.setAttribute('data-tema', 'dark');
+                localStorage.setItem('web-temasi', 'dark');
+            }
+        }
+
+        // --- SU TAKİBİ ---
+        let suMiktari = parseInt(localStorage.getItem('evrensel-su')) || 0;
+        document.getElementById('suBardak').innerText = suMiktari;
+        function suEkle() {
+            suMiktari++;
+            localStorage.setItem('evrensel-su', suMiktari);
+            document.getElementById('suBardak').innerText = suMiktari;
+            sesCal('yem');
+        }
+        function suSifirla() {
+            suMiktari = 0;
+            localStorage.setItem('evrensel-su', 0);
+            document.getElementById('suBardak').innerText = 0;
+        }
+
+        // --- 20-20-20 GÖZ SAYACI ---
+        let gozInterval = null;
+        function gozSayaciniBaslat() {
+            if(gozInterval) clearInterval(gozInterval);
+            let sure = 20 * 60; 
+            const ekran = document.getElementById('gozZamanlayici');
+            
+            gozInterval = setInterval(() => {
+                sure--;
+                let dakika = Math.floor(sure / 60);
+                let saniye = sure % 60;
+                ekran.innerText = `${String(dakika).padStart(2,'0')}:${String(saniye).padStart(2,'0')}`;
+                
+                if (sure <= 0) {
+                    clearInterval(gozInterval);
+                    sesCal('patlama');
+                    alert(diller[mevcutDil].gozUyarisi);
+                    ekran.innerText = "20:00";
+                }
+            }, 1000);
+        }
+
+        // --- POMODORO SAYACI ---
+        let pomoInterval = null;
+        function pomoSayaciniBaslat() {
+            if(pomoInterval) clearInterval(pomoInterval);
+            let sure = 25 * 60; 
+            const ekran = document.getElementById('pomoZamanlayici');
+            
+            pomoInterval = setInterval(() => {
+                sure--;
+                let dakika = Math.floor(sure / 60);
+                let saniye = sure % 60;
+                ekran.innerText = `${String(dakika).padStart(2,'0')}:${String(saniye).padStart(2,'0')}`;
+                
+                if (sure <= 0) {
+                    clearInterval(pomoInterval);
+                    sesCal('patlama');
+                    alert(diller[mevcutDil].pomoUyarisi);
+                    ekran.innerText = "25:00";
+                }
+            }, 1000);
+        }
+
+        // --- SES MOTORU ---
+        let audioCtx = null;
+        function sesCal(tip) {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+            if (tip === 'yem') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(440, audioCtx.currentTime); // Daha yumuşak evrensel ses
+                gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+            } else if (tip === 'patlama') {
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+            }
+        }
+
+        // --- RETRO OYUN MANTIĞI ---
+        const canvas = document.getElementById("oyunTuvali");
+        const ctx = canvas.getContext("2d");
+        const kutuBoyutu = 20;
+        let yilan = [{ x: 200, y: 200 }];
+        let yem = { x: 0, y: 0 };
+        let dx = kutuBoyutu; let dy = 0; let skor = 0; let skorKatsayisi = 10;
+        let oyunDongusu = null; let oyunCalisiyor = false;
+        let enYuksekSkor = localStorage.getItem('yilan-en-yuksek') || 0;
+        document.getElementById('enYuksekDeger').innerText = enYuksekSkor;
+
+        function yemYerlestir() {
+            yem.x = Math.floor(Math.random() * (canvas.width / kutuBoyutu)) * kutuBoyutu;
+            yem.y = Math.floor(Math.random() * (canvas.height / kutuBoyutu)) * kutuBoyutu;
+        }
+
+        function geriSayimiBaslat() {
+            if (oyunCalisiyor) return;
+            document.getElementById('btn-baslat').disabled = true;
+            document.getElementById('zorlukSecici').disabled = true;
+            const ekran = document.getElementById('geriSayimEkran');
+            ekran.style.display = 'flex';
+            let sayac = 3; ekran.innerText = sayac;
+            const sayiciInterval = setInterval(() => {
+                sayac--;
+                if (sayac > 0) { ekran.innerText = sayac; } 
+                else if (sayac === 0) { ekran.innerText = diller[mevcutDil].baslaUnlem; } 
+                else { clearInterval(sayiciInterval); ekran.style.display = 'none'; oyunuBaslat(); }
+            }, 1000);
+        }
+
+        function oyunuBaslat() {
+            oyunCalisiyor = true; yilan = [{ x: 200, y: 200 }]; dx = kutuBoyutu; dy = 0; skor = 0;
+            document.getElementById('skorDeger').innerText = skor; yemYerlestir();
+            const zorluk = document.getElementById('zorlukSecici').value;
+            let hiz = 130;
+            if (zorluk === 'noob') { hiz = 180; skorKatsayisi = 5; } 
+            else if (zorluk === 'pro') { hiz = 120; skorKatsayisi = 10; } 
+            else if (zorluk === 'hacker') { hiz = 70; skorKatsayisi = 20; }
+            oyunDongusu = setInterval(oyunuCiz, hiz);
+        }
+
+        function oyunuCiz() {
+            if (oyunBittiMi()) {
+                sesCal('patlama'); clearInterval(oyunDongusu); oyunCalisiyor = false;
+                document.getElementById('btn-baslat').disabled = false; document.getElementById('zorlukSecici').disabled = false;
+                if (skor > enYuksekSkor) { enYuksekSkor = skor; localStorage.setItem('yilan-en-yuksek', enYuksekSkor); document.getElementById('enYuksekDeger').innerText = enYuksekSkor; }
+                alert(diller[mevcutDil].oyunBitti + skor); return;
+            }
+            ctx.fillStyle = "#0b0f19"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#ef4444"; ctx.fillRect(yem.x, yem.y, kutuBoyutu, kutuBoyutu);
+            const kafa = { x: yilan[0].x + dx, y: yilan[0].y + dy }; yilan.unshift(kafa);
+            if (kafa.x === yem.x && kafa.y === yem.y) { sesCal('yem'); skor += skorKatsayisi; document.getElementById('skorDeger').innerText = skor; yemYerlestir(); } 
+            else { yilan.pop(); }
+            yilan.forEach((parca, indeks) => {
+                ctx.fillStyle = indeks === 0 ? "#6366f1" : "#818cf8";
+                ctx.fillRect(parca.x, parca.y, kutuBoyutu - 2, kutuBoyutu - 2);
+            });
+        }
+
+        function oyunBittiMi() {
+            const kafa = yilan[0];
+            if (kafa.x < 0 || kafa.x >= canvas.width || kafa.y < 0 || kafa.y >= canvas.height) return true;
+            for (let i = 1; i < yilan.length; i++) { if (kafa.x === yilan[i].x && kafa.y === yilan[i].y) return true; }
+            return false;
+        }
+
+        window.addEventListener("keydown", e => {
+            if (!oyunCalisiyor) return;
+            if (e.key === "ArrowUp" && dy === 0) { dx = 0; dy = -kutuBoyutu; }
+            if (e.key === "ArrowDown" && dy === 0) { dx = 0; dy = kutuBoyutu; }
+            if (e.key === "ArrowLeft" && dx === 0) { dx = -kutuBoyutu; dy = 0; }
+            if (e.key === "ArrowRight" && dx === 0) { dx = kutuBoyutu; dy = 0; }
+        });
+
+        ctx.fillStyle = "#0b0f19"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+        diliYansit();
+    </script>
+</body>
+</html>
